@@ -1,0 +1,23 @@
+syntax = "proto3";
+package trpc.app.server;
+//pb文件所在github上的位置实例：github.com/项目名/项目服务名/pb文件所在的上一层
+option go_package="github.com/trpc-go-proj/midlle_pb/account_server_pb";
+
+//trpc函数接受的请求参数，这里定义一个字段是将所有的参数拼成key=value，然后url编码的形式，可以不用频繁更新pb文件
+message Req {
+  string req = 1;
+}
+
+//trpc函数返回参数，err_code为返回错误码，err_msg为对应的错误信息，rsp为返回的数据，和请求参数同理
+message Rsp {
+  int32 err_code = 1;
+  string err_msg = 2;
+  string rsp     = 3;
+}
+
+//account service中存在几个函数。函数名和对应的请求参数返回参数是什么
+service Account {
+  rpc OpenCheck(Req) returns (Rsp); // @alias=/Account/OpenCheck
+  rpc Open(Req) returns (Rsp); // @alias=/Account/Open
+  rpc GetApiKeys(Req) returns (Rsp); // @alias=/Account/GetApiKeys
+}
